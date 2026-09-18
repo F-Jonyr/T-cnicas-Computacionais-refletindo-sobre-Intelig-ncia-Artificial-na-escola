@@ -1,0 +1,85 @@
+<!DOCTYPE html> <html lang="pt-br"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<title>Você decide o futuro da IA</title>
+
+</head> <body>
+<main class="caixa-principal">
+
+    <div class="cabecalho">
+        <span class="tag">SIMULAÇÃO DO FUTURO</span>
+
+        <h1>Você decide o futuro da IA</h1>
+
+        <p class="subtitulo">
+            Suas escolhas ajudam a construir diferentes possibilidades
+            para o futuro da Inteligência Artificial.
+        </p>
+
+        <div class="progresso-container">
+            <div class="progresso-info">
+                <span>Progresso</span>
+                <span id="numero-pergunta">1 / 10</span>
+            </div>
+
+            <div class="barra">
+                <div class="barra-progresso"></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="caixa-jogo">
+
+        <div class="icone-pergunta">
+            🤖
+        </div>
+
+        <div class="caixa-perguntas"></div>
+
+        <div class="caixa-alternativas"></div>
+
+    </section>
+
+    <section class="caixa-resultado">
+
+        <div class="resultado-icone">
+            🌎
+        </div>
+
+        <h2 id="titulo-resultado">
+            Em 2049...
+        </h2>
+
+        <p class="texto-resultado"></p>
+
+        <div class="estatisticas">
+
+            <div class="estatistica">
+                <span class="numero" id="pontuacao-final">0</span>
+                <span class="descricao">pontos</span>
+            </div>
+
+            <div class="estatistica">
+                <span class="numero" id="perfil-final">IA</span>
+                <span class="descricao">perfil</span>
+            </div>
+
+        </div>
+
+        <button class="botao-reiniciar" onclick="reiniciarJogo()">
+            🔄 Jogar novamente
+        </button>
+
+    </section>
+
+    <footer>
+        <p>
+            Uma reflexão sobre tecnologia, escolhas e o futuro.
+        </p>
+    </footer>
+
+</main>
+
+<script src="script.js"></script>
+
+</body> </html>
