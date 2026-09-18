@@ -1,0 +1,490 @@
+const caixaPrincipal = document.querySelector(".caixa-principal");
+const caixaPerguntas = document.querySelector(".caixa-perguntas");
+const caixaAlternativas = document.querySelector(".caixa-alternativas");
+const caixaResultado = document.querySelector(".caixa-resultado");
+const textoResultado = document.querySelector(".texto-resultado");
+
+const barraProgresso = document.querySelector(".barra-progresso");
+const numeroPergunta = document.querySelector("#numero-pergunta");
+
+const pontuacaoFinal = document.querySelector("#pontuacao-final");
+const perfilFinal = document.querySelector("#perfil-final");
+
+let atual = 0;
+let pontuacao = 0;
+
+let tecnologia = 0;
+let etica = 0;
+let criatividade = 0;
+
+const perguntas = [
+
+{
+    enunciado:
+        "Assim que saiu da escola, você se depara com uma nova tecnologia: um chat capaz de responder dúvidas, criar imagens e produzir áudios extremamente realistas. Qual é sua primeira reação?",
+
+    alternativas: [
+
+        {
+            texto: "😨 Isso é assustador. Precisamos tomar cuidado com essa tecnologia.",
+            pontos: 1,
+            etica: 2
+        },
+
+        {
+            texto: "🤩 Isso é maravilhoso! Quero descobrir tudo o que essa tecnologia consegue fazer.",
+            pontos: 2,
+            tecnologia: 2
+        },
+
+        {
+            texto: "🤔 É impressionante, mas primeiro quero entender como ela funciona.",
+            pontos: 2,
+            tecnologia: 1,
+            etica: 1
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Uma professora decide fazer uma sequência de aulas sobre Inteligência Artificial. No fim de uma aula, ela pede que você produza um trabalho sobre o uso da tecnologia em sala de aula. O que você faz?",
+
+    alternativas: [
+
+        {
+            texto: "🔎 Uso uma ferramenta de IA para encontrar informações e depois verifico as fontes e escrevo com minhas próprias palavras.",
+            pontos: 3,
+            tecnologia: 2,
+            etica: 2
+        },
+
+        {
+            texto: "✍️ Faço o trabalho usando livros, sites, minhas anotações e meus próprios conhecimentos.",
+            pontos: 2,
+            etica: 2
+        },
+
+        {
+            texto: "🤖 Peço para a IA escrever o trabalho inteiro e entrego exatamente como ela produziu.",
+            pontos: 0,
+            tecnologia: 2
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Durante uma pesquisa, a IA apresenta uma informação que parece muito convincente, mas você não sabe se ela é verdadeira. O que você faz?",
+
+    alternativas: [
+
+        {
+            texto: "🔍 Procuro outras fontes confiáveis antes de utilizar a informação.",
+            pontos: 3,
+            etica: 2
+        },
+
+        {
+            texto: "🤖 Confio na resposta porque a IA provavelmente sabe mais do que eu.",
+            pontos: 0,
+            tecnologia: 1
+        },
+
+        {
+            texto: "🧠 Comparo a resposta da IA com meus conhecimentos e depois decido como utilizá-la.",
+            pontos: 2,
+            etica: 1,
+            tecnologia: 1
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "No debate da escola surge uma questão importante: a IA pode transformar o mercado de trabalho. Como você participa dessa discussão?",
+
+    alternativas: [
+
+        {
+            texto: "👷 Me preocupo com os trabalhadores que podem perder empregos e defendo preparação e proteção para essas mudanças.",
+            pontos: 3,
+            etica: 3
+        },
+
+        {
+            texto: "💼 Acredito que novas tecnologias também podem criar novas profissões e oportunidades.",
+            pontos: 3,
+            tecnologia: 2
+        },
+
+        {
+            texto: "⚖️ Acho que as duas coisas podem acontecer: alguns empregos podem desaparecer enquanto outros surgem.",
+            pontos: 3,
+            etica: 1,
+            tecnologia: 1
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Você precisa criar uma imagem para representar sua visão sobre o futuro da IA. Qual caminho escolhe?",
+
+    alternativas: [
+
+        {
+            texto: "🎨 Criar a imagem manualmente utilizando uma ferramenta de desenho.",
+            pontos: 2,
+            criatividade: 3
+        },
+
+        {
+            texto: "🤖 Utilizar um gerador de imagens por IA e explicar como a ferramenta foi usada.",
+            pontos: 3,
+            tecnologia: 2,
+            criatividade: 1
+        },
+
+        {
+            texto: "✨ Misturar ferramentas: começo criando a imagem com IA e depois faço alterações manualmente.",
+            pontos: 4,
+            tecnologia: 1,
+            criatividade: 3
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Seu grupo de biologia está atrasado. Um colega utilizou IA para produzir praticamente todo o trabalho. O texto está pronto, mas ninguém verificou as informações. O que você faz?",
+
+    alternativas: [
+
+        {
+            texto: "📚 Revisamos tudo, verificamos as informações e acrescentamos nossas próprias ideias.",
+            pontos: 4,
+            etica: 3
+        },
+
+        {
+            texto: "📄 Se o texto está pronto, podemos entregar para economizar tempo.",
+            pontos: 0,
+            tecnologia: 1
+        },
+
+        {
+            texto: "🛠️ Usamos a IA apenas como ponto de partida e dividimos entre o grupo a revisão e complementação.",
+            pontos: 3,
+            tecnologia: 1,
+            etica: 2
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Você percebe que uma IA consegue criar uma imagem extremamente parecida com o trabalho de um artista. Surge então uma discussão sobre criatividade e autoria. Qual é sua opinião?",
+
+    alternativas: [
+
+        {
+            texto: "🎭 A criatividade humana continua importante, e devemos discutir direitos e autoria quando usamos obras de outras pessoas.",
+            pontos: 4,
+            etica: 3,
+            criatividade: 2
+        },
+
+        {
+            texto: "🚀 A IA é apenas uma nova ferramenta e pode ampliar as possibilidades de criação.",
+            pontos: 3,
+            criatividade: 3,
+            tecnologia: 2
+        },
+
+        {
+            texto: "⚖️ A tecnologia pode ser utilizada, mas precisamos estabelecer regras claras para proteger criadores.",
+            pontos: 4,
+            etica: 3,
+            tecnologia: 1
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Imagine que, no futuro, uma IA seja responsável por tomar decisões importantes dentro de uma empresa. Você acha que os seres humanos devem continuar supervisionando essas decisões?",
+
+    alternativas: [
+
+        {
+            texto: "👁️ Sim. Sistemas importantes devem ter supervisão humana e formas de contestar decisões.",
+            pontos: 4,
+            etica: 3
+        },
+
+        {
+            texto: "🤖 Se a IA for mais rápida e precisa, podemos confiar nela para muitas decisões.",
+            pontos: 3,
+            tecnologia: 3
+        },
+
+        {
+            texto: "🤝 A IA pode ajudar na decisão, mas a responsabilidade final deve continuar sendo humana.",
+            pontos: 4,
+            etica: 2,
+            tecnologia: 1
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Uma empresa oferece uma IA capaz de analisar milhares de dados pessoais para oferecer serviços personalizados. Você aceitaria utilizar essa tecnologia?",
+
+    alternativas: [
+
+        {
+            texto: "🔐 Sim, mas somente se houver transparência sobre quais dados estão sendo utilizados.",
+            pontos: 4,
+            etica: 3,
+            tecnologia: 1
+        },
+
+        {
+            texto: "⚡ Sim. Se o serviço melhorar, vale a pena utilizar a tecnologia.",
+            pontos: 2,
+            tecnologia: 3
+        },
+
+        {
+            texto: "🛡️ Prefiro não utilizar se não puder controlar como meus dados serão armazenados e utilizados.",
+            pontos: 3,
+            etica: 3
+        }
+
+    ]
+},
+
+{
+    enunciado:
+        "Estamos em 2049. A IA está presente em escolas, hospitais, empresas, transportes e na vida cotidiana. Qual futuro você gostaria de ajudar a construir?",
+
+    alternativas: [
+
+        {
+            texto: "🌱 Um futuro em que humanos e IA trabalham juntos, com tecnologia responsável e supervisionada.",
+            pontos: 5,
+            etica: 3,
+            tecnologia: 2
+        },
+
+        {
+            texto: "🚀 Um futuro em que a IA tenha liberdade para desenvolver novas soluções e acelerar o progresso.",
+            pontos: 5,
+            tecnologia: 4
+        },
+
+        {
+            texto: "🎨 Um futuro em que a tecnologia aumente a criatividade e as capacidades das pessoas.",
+            pontos: 5,
+            criatividade: 4,
+            tecnologia: 1
+        }
+
+    ]
+}
+
+
+];
+
+function mostraPergunta() {
+
+if (atual >= perguntas.length) {
+    mostraResultado();
+    return;
+}
+
+const perguntaAtual = perguntas[atual];
+
+caixaPerguntas.textContent = perguntaAtual.enunciado;
+
+caixaAlternativas.innerHTML = "";
+
+numeroPergunta.textContent =
+    `${atual + 1} / ${perguntas.length}`;
+
+const progresso =
+    ((atual + 1) / perguntas.length) * 100;
+
+barraProgresso.style.width =
+    `${progresso}%`;
+
+mostraAlternativas();
+
+
+}
+
+function mostraAlternativas() {
+
+const perguntaAtual = perguntas[atual];
+
+for (const alternativa of perguntaAtual.alternativas) {
+
+    const botao =
+        document.createElement("button");
+
+    botao.textContent =
+        alternativa.texto;
+
+    botao.addEventListener(
+        "click",
+        () => respostaSelecionada(alternativa)
+    );
+
+    caixaAlternativas.appendChild(botao);
+}
+
+
+}
+
+function respostaSelecionada(opcaoSelecionada) {
+
+pontuacao += opcaoSelecionada.pontos || 0;
+
+tecnologia += opcaoSelecionada.tecnologia || 0;
+
+etica += opcaoSelecionada.etica || 0;
+
+criatividade += opcaoSelecionada.criatividade || 0;
+
+atual++;
+
+mostraPergunta();
+
+
+}
+
+function mostraResultado() {
+
+document.querySelector(".caixa-jogo").style.display = "none";
+
+caixaResultado.style.display = "block";
+
+barraProgresso.style.width = "100%";
+
+numeroPergunta.textContent =
+    "Concluído";
+
+const resultado =
+    descobrirPerfil();
+
+perfilFinal.textContent =
+    resultado.nome;
+
+pontuacaoFinal.textContent =
+    pontuacao;
+
+textoResultado.innerHTML =
+    resultado.texto;
+
+
+}
+
+function descobrirPerfil() {
+
+/*
+    A ideia aqui não é dizer que existe
+    uma escolha "certa".
+
+    O resultado apenas representa
+    o conjunto de escolhas realizadas.
+*/
+
+if (
+    etica >= tecnologia &&
+    etica >= criatividade
+) {
+
+    return {
+
+        nome: "GUARDIÃO",
+
+        texto:
+            "Você imaginou um futuro em que o desenvolvimento da IA precisa caminhar junto com responsabilidade, transparência e participação humana. Para você, a tecnologia pode trazer grandes benefícios, mas as pessoas precisam continuar discutindo seus impactos e estabelecendo limites."
+    };
+}
+
+
+if (
+    tecnologia > etica &&
+    tecnologia >= criatividade
+) {
+
+    return {
+
+        nome: "PIONEIRO",
+
+        texto:
+            "Seu futuro é marcado pela exploração das possibilidades da Inteligência Artificial. Você vê a tecnologia como uma ferramenta capaz de transformar a maneira como aprendemos, trabalhamos e resolvemos problemas. Nesse cenário, experimentar e descobrir novas possibilidades tem um papel importante."
+    };
+}
+
+
+if (
+    criatividade > tecnologia &&
+    criatividade > etica
+) {
+
+    return {
+
+        nome: "CRIADOR",
+
+        texto:
+            "Você imagina um futuro em que a IA amplia a criatividade humana. Em vez de substituir a imaginação das pessoas, a tecnologia aparece como uma ferramenta para experimentar novas ideias, criar projetos e explorar possibilidades que antes seriam difíceis de alcançar."
+    };
+}
+
+
+return {
+
+    nome: "EQUILIBRISTA",
+
+    texto:
+        "Suas escolhas mostram uma tentativa de equilibrar diferentes possibilidades. Você reconhece o potencial da IA, mas também considera seus impactos sociais, éticos e criativos. Seu futuro combina inovação, responsabilidade e participação humana."
+};
+
+
+}
+
+function reiniciarJogo() {
+
+atual = 0;
+
+pontuacao = 0;
+
+tecnologia = 0;
+
+etica = 0;
+
+criatividade = 0;
+
+caixaResultado.style.display = "none";
+
+document.querySelector(".caixa-jogo").style.display =
+    "block";
+
+mostraPergunta();
+
+
+}
+
+mostraPergunta();
